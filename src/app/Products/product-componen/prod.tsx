@@ -1,17 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import Cart from "../../public/Buy 2.svg";
+import Cart from "../../../../public/Buy 2.svg";
 
-interface Product {
-  id: number;
-  img: string;
-  label: string;
-  price: string;
-  name: string;
-  labelColor: string;
-}
-
-const products: Product[] = [
+const products = [
   {
     id: 1,
     img: "/productimg1.png",
@@ -78,7 +69,7 @@ const products: Product[] = [
   },
 ];
 
-interface ProductCardProps {
+interface ProductCard {
   img: string;
   label: string;
   price: string;
@@ -86,42 +77,32 @@ interface ProductCardProps {
   labelColor: string;
 }
 
-const ProductCard = ({ img, label, price, name, labelColor }: ProductCardProps) => (
-  <div className="w-full h-auto max-w-[312px] mx-auto relative">
-    {/* Product Image */}
+const ProductCard = ({ img, label, price, name, labelColor }: ProductCard) => (
+  <div className="w-full sm:w-[280px] h-auto mx-auto relative bg-white shadow-md rounded-md p-3">
     <Image
       src={img}
       alt={name}
-      width={312}
-      height={312}
-      className="w-full h-auto object-cover rounded-lg"
+      width={280}
+      height={280}
+      className="rounded-md"
     />
-    {/* Label */}
     {label && (
       <button
-        className="absolute top-[10px] left-[10px] text-graywhite px-[10px] py-[4px] rounded-sm font-medium"
+        className="absolute top-[20px] left-[20px]  text-white text-xs px-[8px] py-[4px] rounded-sm"
         style={{ backgroundColor: labelColor }}
       >
         {label}
       </button>
     )}
-    {/* Product Info */}
-    <div className="flex justify-between items-center mt-[14px]">
+    <div className="flex justify-between items-center mt-2">
       <div>
-        <span className="text-[16px] hover:text-[#007580] text-grayscalesblack">
+        <span className="text-sm font-medium hover:text-[#007580] text-gray-800">
           {name}
         </span>
-        <p className="text-grayscalesblack font-bold mt-[6px]">{price}</p>
+        <p className="text-gray-800 font-bold mt-[4px]">{price}</p>
       </div>
-      {/* Add to Cart Button */}
-      <div className="hover:bg-buttoncolor hover:font-semibold hover:text-white h-[44px] w-[44px] flex justify-center items-center rounded-sm bg-backgroundcolor transition-all duration-300">
-        <Image
-          src={Cart}
-          alt="Add to Cart"
-          width={24}
-          height={24}
-          className="h-[24px] w-[24px]"
-        />
+      <div className="h-[36px] w-[36px] flex justify-center items-center rounded-sm bg-gray-200 hover:bg-green-600 hover:text-white transition-all duration-300 cursor-pointer">
+        <Image src={Cart} alt="Add to Cart" width={20} height={20} />
       </div>
     </div>
   </div>
@@ -129,12 +110,11 @@ const ProductCard = ({ img, label, price, name, labelColor }: ProductCardProps) 
 
 export default function OurProduct() {
   return (
-    <div className="mx-auto max-w-screen-2xl px-4 lg:px-0 mb-[136px] mt-[120px] lg:w-[80%]">
-      <h1 className="font-semibold text-[28px] md:text-[34px] text-grayscalesblack text-center pb-[30px]">
-        Our Products
+    <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 mt-10">
+      <h1 className="font-semibold lg:text-[34px] text-2xl text-gray-800 mb-6 text-center sm:text-left lg:pt-[130px] lg:pl-[20px]">
+        All Products
       </h1>
-      {/* Grid Container */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[16px] md:gap-[16px] mt-[20px]">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}

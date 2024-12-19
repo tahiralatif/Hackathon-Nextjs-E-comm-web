@@ -18,7 +18,7 @@ export default function Pages() {
         </div>
 
         {/* Text Div */}
-        <div className="text-center md:text-left md:ml-[20px]">
+        <div className="text-center md:text-left md:ml-[20px] mt-[50px]">
           <h1 className="text-[40px] md:text-[60px] pt-[20px] font-bold text-grayscalesblack">
             Library Stool <br /> Chair
           </h1>

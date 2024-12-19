@@ -83,19 +83,19 @@ export default function Navbar() {
                   </div>
                   <ul className="space-y-4 text-lg font-medium mt-[100px] ml-[100px]">
                     <li className="hover:underline hover:text-buttoncolor">
-                      <Link href="#">Home</Link>
+                      <Link href="/">Home</Link>
                     </li>
                     <li className="hover:underline hover:text-buttoncolor">
-                      <Link href="#">Shop</Link>
+                      <Link href="shop">Shop</Link>
                     </li>
                     <li className="hover:underline hover:text-buttoncolor">
-                      <Link href="#">Product</Link>
+                      <Link href="Products">Product</Link>
                     </li>
                     <li className="hover:underline hover:text-buttoncolor">
-                      <Link href="#">Pages</Link>
+                      <Link href="page">Pages</Link>
                     </li>
                     <li className="hover:underline hover:text-buttoncolor">
-                      <Link href="#">About</Link>
+                      <Link href="about">About</Link>
                     </li>
                   </ul>
                 </SheetContent>

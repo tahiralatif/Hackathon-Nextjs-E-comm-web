@@ -1,105 +1,129 @@
-import React from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import Plus from "../../../public/Plus.svg";
+import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 
-export default function FaqSec() {
-  const faqs = [
-    {
-      question: "What types of chairs do you offer?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quis modi ullam amet debitis libero veritatis enim repellat optio natus eum delectus deserunt, odit expedita eos molestiae ipsa totam quidem?",
-    },
-    {
-      question: "Do your chairs come with a warranty?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quis modi ullam amet debitis libero veritatis enim repellat optio natus eum delectus deserunt, odit expedita eos molestiae ipsa totam quidem?",
-    },
-    {
-      question: "Can I try a chair before purchasing?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quis modi ullam amet debitis libero veritatis enim repellat optio natus eum delectus deserunt, odit expedita eos molestiae ipsa totam quidem?",
-    },
-    {
-      question: "How can we get in touch with you?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quis modi ullam amet debitis libero veritatis enim repellat optio natus eum delectus deserunt, odit expedita eos molestiae ipsa totam quidem?",
-    },
-    {
-      question: "What will be delivered? And When?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quis modi ullam amet debitis libero veritatis enim repellat optio natus eum delectus deserunt, odit expedita eos molestiae ipsa totam quidem?",
-    },
-    {
-      question: "How do I clean and maintain my Comforty chair?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quis modi ullam amet debitis libero veritatis enim repellat optio natus eum delectus deserunt, odit expedita eos molestiae ipsa totam quidem?",
-    },
-  ];
+interface ProductDetails {
+  title: string;
+  price: number;
+  priceWithoutDiscount: number;
+  badge: string;
+  imageURL: string;
+  category: string;
+  description: string;
+  inventory: number;
+  tags: string[];
+}
+
+interface Params {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function ProductDetailsPage({ params }: Params) {
+  const { slug } = params;
+
+  // Fetch product details
+  const product: ProductDetails | null = await client.fetch(
+    `*[_type == "products" && slug.current == $slug][0]{
+      title,
+      price,
+      priceWithoutDiscount,
+      badge,
+      "imageURL": image.asset->url,
+      category,
+      description,
+      inventory,
+      tags
+    }`,
+    { slug }
+  );
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
 
   return (
-    <div className="px-4 lg:px-0 mt-12 mx-auto max-w-screen-xl lg:mt-[120px]">
-      {/* Heading Section */}
-      <div className="text-center px-4">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-grayscalesblack  mx-auto">
-          Question Looks Here
-        </h1>
-        <p className="text-gray-500 mt-4 max-w-[700px] mx-auto">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been
-        </p>
-      </div>
+    <div className="w-full h-full max-w-screen-xl mx-auto mt-[76px] mb-[300px]">
+      <div className="w-[1609px] h-[632.89px] mt-[151px] mx-[30px] md:mx-[80px]">
+        <div className="my-[20px] w-[1100px] h-[547px] lg:flex md:flex">
+          <div className="w-[733.33px] h-[547.89px] mb-[22px] mt-[22px]">
+            <h2 className="text-[#111111] font-medium text-[20px] md:pl-[6px]">
+              {product.title}
+            </h2>
 
-      {/* FAQ Section */}
-      <div className="mt-8 lg:mt-12 flex flex-col lg:flex-row gap-6">
-        {/* Left Side Accordion */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-y-6">
-          {faqs.slice(0, 3).map((faq, index) => (
-            <Accordion key={index} type="single" collapsible>
-              <AccordionItem
-                value={`item-${index}`}
-                className="bg-[#f8f8f8]  items-center  rounded-lg p-4 shadow-md"
-              >
-                <AccordionTrigger className="text-left  text-lg font-bold text-grayscalesblack flex-1">
-                  <div className=" w-full flex justify-between">
-                  {faq.question}
-                  <Image src={Plus} alt="Plus Icon" width={20} height={20} className="ml-[40px]"/>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 text-base mt-2">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          ))}
-        </div>
+            <div className="flex items-center mt-[24px] pb-[16px]">
+              <Image
+                src={product.imageURL}
+                alt={product.title}
+                width={500}
+                height={500}
+                className="w-[150px] h-[150px] mr-[30px] mt-[24px]"
+              />
+              <div className="w-full">
+                <div className="flex justify-between">
+                  <p className="font-normal text-[16px] text-grayscalesblack pb-4">
+                    {product.title}
+                  </p>
+                  <p className="font-normal text-[16px] text-grayscalesblack pb-4">
+                    MRP: ${product.price}
+                  </p>
+                </div>
+                <p className="text-[15px] text-[#757575] font-normal pb-4">
+                  {product.category}
+                </p>
+                <div className="flex gap-x-[50px] mb-[20px]">
+                  <p className="text-[#757575] text-[15px] font-normal">
+                    Size L
+                  </p>
+                  <p className="text-[#757575] text-[15px] font-normal">
+                    Inventory: {product.inventory}
+                  </p>
+                </div>
+                <div className="flex">
+                  <button className="px-6 py-3 bg-blue-500 text-white rounded-lg mr-4">
+                    Add to Cart
+                  </button>
+                  <button className="px-6 py-3 bg-gray-300 text-black rounded-lg">
+                    Add to Wishlist
+                  </button>
+                </div>
+              </div>
+            </div>
 
-        {/* Right Side Accordion */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-y-6">
-          {faqs.slice(3, 6).map((faq, index) => (
-            <Accordion key={index + 3} type="single" collapsible>
-              <AccordionItem
-                value={`item-${index + 3}`}
-                className="bg-[#f8f8f8] items-center  rounded-lg p-4 shadow-md"
-              >
-                <AccordionTrigger className="text-left  text-lg font-bold text-grayscalesblack flex-1">
-               
-                <div className=" w-full flex justify-between">
-                  {faq.question}
-                  <Image src={Plus} alt="Plus Icon" width={20} height={20} className="ml-[40px]"/>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 text-base mt-2">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          ))}
+            <div className="flex items-center mt-[24px] border-t-2 pt-[16px]">
+              <p className="text-[15px] text-[#757575] font-normal pb-4">
+                {product.description}
+              </p>
+            </div>
+          </div>
+
+          <div className="w-[390px] h-[295px] mt-[28px] md:mr-[158px] md:pl-[75px]">
+            <h2 className="font-medium text-[21px] px-[8px] py-[-1px]">
+              Price Summary
+            </h2>
+
+            <div className="flex justify-between items-center px-[4px] pt-[37px]">
+              <p className="text-[15px] font-normal">Price</p>
+              <p className="text-[14px] font-medium text-grayscalesblack">
+                ${product.price}
+              </p>
+            </div>
+
+            <div className="flex justify-between items-center px-[4px] pt-[37px]">
+              <p className="text-[15px] font-normal">Discount</p>
+              <p className="text-[14px] font-medium text-grayscalesblack">
+                ${product.priceWithoutDiscount - product.price}
+              </p>
+            </div>
+
+            <div className="w-[340.38px] pb-[19px] pt-[19px] flex justify-between border-t-2 border-b-2 mt-[20px]">
+              <p>Total</p>
+              <p>${product.price}</p>
+            </div>
+            <button className="w-[334.67px] h-[60px] bg-[#029FAE] hover:bg-[#57bbc4] mt-[32px] px-[101px] mb-[400px] py-[18px] text-[#FAFAFA] rounded-full">
+              Member Checkout
+            </button>
+          </div>
         </div>
       </div>
     </div>

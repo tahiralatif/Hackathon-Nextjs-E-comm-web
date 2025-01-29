@@ -1,6 +1,7 @@
 import React from 'react'
-import Prod from "../../app/Products/product-componen/prod"
 import Newsletter from './product-componen/newsletter'
+import Prod from "./product-componen/prod"
+
 
 export default function ProductPage() {
   return (

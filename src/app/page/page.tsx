@@ -8,6 +8,7 @@ import Img3 from "../../../public/categoryimg3.png";
 import Img4 from "../../../public/prod-3.png";
 import Img5 from "../../../public/our-prodimg-4.png";
 
+
 export default function Pages() {
   return (
     <>
@@ -18,7 +19,7 @@ export default function Pages() {
         </div>
 
         {/* Text Div */}
-        <div className="text-center md:text-left md:ml-[20px] mt-[50px]">
+        <div className="text-center md:text-left md:ml-[10px] mt-[50px]">
           <h1 className="text-[40px] md:text-[60px] pt-[20px] font-bold text-grayscalesblack">
             Library Stool <br /> Chair
           </h1>
@@ -132,3 +133,4 @@ export default function Pages() {
     </>
   );
 }
+

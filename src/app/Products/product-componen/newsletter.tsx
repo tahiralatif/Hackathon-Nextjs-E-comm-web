@@ -1,13 +1,50 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Img1 from "../../../../public/categaory-img1.png";
-import Img2 from "../../../../public/categoryimg-2.png";
-import Img3 from "../../../../public/prod-2.png";
-import Img4 from "../../../../public/productimg1.png";
-import Img5 from "../../../../public/prod-3.png";
-import Img6 from "../../../../public/categoryimg3.png";
+import { client } from "@/sanity/lib/client";
+
+interface InstaProductData {
+  title: string;
+  price: number;
+  priceWithoutDiscount: number;
+  badge: string;
+  imageURL: string;
+  category: string;
+  description: string;
+  inventory: number;
+  tags: string[];
+}
+
+async function getGalleryProducts(): Promise<InstaProductData[]> {
+  const fetchData = await client.fetch(
+    `*[_type == "products" && "instagram" in tags][2..7]{
+      title,
+      "slug": slug.current,
+      price,
+      priceWithoutDiscount,
+      badge,
+      "imageURL": image.asset->url,
+      category,
+      description,
+      inventory,
+      tags
+    }`
+  );
+  return fetchData;
+}
 
 export default function Newsletter() {
+  const [products, setProducts] = useState<InstaProductData[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getGalleryProducts();
+      setProducts(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="mt-[173px] w-full py-[100px] h-auto mx-auto max-w-screen-2xl bg-backgroundcolor">
@@ -34,49 +71,22 @@ export default function Newsletter() {
             Follow products and discounts on Instagram
           </h1>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mx-auto px-4">
-            {/* Image Components */}
-            <div className="w-full h-[186px]">
-              <Image
-                src={Img1}
-                alt="Img1"
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-            <div className="w-full h-[186px]">
-              <Image
-                src={Img2}
-                alt="Img2"
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-            <div className="w-full h-[186px]">
-              <Image
-                src={Img3}
-                alt="Img3"
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-            <div className="w-full h-[186px]">
-              <Image
-                src={Img4}
-                alt="Img4"
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-            <div className="w-full h-[186px]">
-              <Image
-                src={Img5}
-                alt="Img5"
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-            <div className="w-full h-[186px]">
-              <Image
-                src={Img6}
-                alt="Img6"
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
+            {/* Dynamically Render Images */}
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <div key={index} className="w-full h-[186px]">
+                  <Image
+                    src={product.imageURL || "/default-product-image.png"} // Fallback if no imageURL
+                    alt={product.title}
+                    className="w-full h-full object-cover rounded-md"
+                    width={300}
+                    height={300}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No Instagram products found</p>
+            )}
           </div>
         </div>
       </div>

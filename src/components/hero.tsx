@@ -18,11 +18,12 @@ export default function HeroSec() {
           <div className="lg:flex lg:items-center lg:justify-between mx-auto max-w-screen-xl lg:px-4 px-[30px]">
             {/* Text Content */}
             <div className="flex flex-col lg:max-w-[60%] max-w-full pl-[40px] ">
-              <p className="text-[14px] font-normal pb-[16px] text-grayscalesblack">
+              <p className="text-[14px] font-semibold  pb-[16px] text-grayscalesblack">
                 WELCOME TO CHAIRY
               </p>
-              <h1 className="font-bold text-[32px] sm:text-[40px] md:text-[55px] lg:text-[60px] text-grayscalesblack md:leading-tight pb-[24px]">
-                Best Furniture <br />
+              <h1 className="font-bold text-[32px] sm:text-[40px] md:text-[45px] lg:text-[60px] text-grayscalesblack md:leading-tight pb-[24px]">
+                Best <span className="text-buttoncolor">
+                Furniture</span> <br />
                 Collection for your <br />
                 interior.
               </h1>
@@ -34,7 +35,7 @@ export default function HeroSec() {
             </div>
 
             {/* Hero Image */}
-            <div className="w-full lg:max-w-[50%] flex justify-center">
+            <div className="w-full lg:max-w-[45%] flex justify-center">
               <Image 
                 src={HeroImage} 
                 alt="Hero Image" 

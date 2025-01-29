@@ -23,7 +23,7 @@ export default function AboutPage() {
         </h1>
 
         {/* Paragraph */}
-        <p className="pr-[10px] md:pr-[30px] text-[14px] sm:text-[16px] md:text-[18px] text-[#FFFFFF] pt-[12px]">
+        <p className="pr-[10px] md:pr-[50px] text-[14px] sm:text-[16px] md:text-[18px] text-[#FFFFFF] pt-[12px]">
           {`At Comforty, we believe that the right chair can transform 
           your space and elevate your comfort. Specializing in ergonomic design, 
           premium materials, and modern aesthetics, we craft chairs that seamlessly
@@ -50,7 +50,7 @@ export default function AboutPage() {
 
 
         {/* Section Title */}
-        <h1 className="font-bold text-[32px] pr-[20px] md:pl-[600px] md:mt-[32px] text-center sm:text-left mt-[40px]">
+        <h1 className="font-bold text-[32px] pr-[20px] md:pl-[20px] max-w-xl mx-auto md:mt-[32px] text-center sm:text-left mt-[40px]">
           What makes our Brand Different
         </h1>
 

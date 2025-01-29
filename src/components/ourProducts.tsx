@@ -1,92 +1,63 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Cart from "../../public/Buy 2.svg";
+import { client } from "@/sanity/lib/client";
+import Link from "next/link";
 
-interface Product {
-  id: number;
-  img: string;
-  label: string;
-  price: string;
-  name: string;
-  labelColor: string;
+interface ProductData {
+  title: string;
+  price: number;
+  priceWithoutDiscount: number;
+  badge: string;
+  imageURL: string;
+  category: string;
+  description: string;
+  inventory: number;
+  tags: string[];
+  currentSlug: string; // Add slug to the interface
 }
-
-const products: Product[] = [
-  {
-    id: 1,
-    img: "/productimg1.png",
-    label: "New",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "#01AD5A",
-  },
-  {
-    id: 2,
-    img: "/prod-2.png",
-    label: "Sales",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "#F5813F",
-  },
-  {
-    id: 3,
-    img: "/prod-3.png",
-    label: "",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "",
-  },
-  {
-    id: 4,
-    img: "/prod-4.png",
-    label: "",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "",
-  },
-  {
-    id: 5,
-    img: "/our-prodimg-4.png",
-    label: "",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "",
-  },
-  {
-    id: 6,
-    img: "/popularImg1.png",
-    label: "",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "",
-  },
-  {
-    id: 7,
-    img: "/popularimg-2.png",
-    label: "",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "",
-  },
-  {
-    id: 8,
-    img: "/popular-img-3.png",
-    label: "",
-    price: "$20",
-    name: "Library Stool Chair",
-    labelColor: "",
-  },
-];
 
 interface ProductCardProps {
   img: string;
   label: string;
-  price: string;
+  price: number;
   name: string;
   labelColor: string;
+  slug: string; // Add slug prop
 }
 
-const ProductCard = ({ img, label, price, name, labelColor }: ProductCardProps) => (
+async function getData(): Promise<ProductData[]> {
+  const fetchData = await client.fetch(
+    `*[_type == "products"][0..7]{
+      title,
+            "currentSlug": slug.current, 
+      price,
+      priceWithoutDiscount,
+      badge,
+      "imageURL": image.asset->url,
+      category,
+      description,
+      inventory,
+      tags
+    }`
+  );
+  return fetchData;
+}
+
+
+
+
+
+
+const ProductCard = ({
+  img,
+  label,
+  price,
+  name,
+  labelColor,
+  slug, // Receive slug prop
+}: ProductCardProps) => (
   <div className="w-full h-auto max-w-[312px] mx-auto relative">
     {/* Product Image */}
     <Image
@@ -124,10 +95,30 @@ const ProductCard = ({ img, label, price, name, labelColor }: ProductCardProps) 
         />
       </div>
     </div>
+    {/* Link to Product Details */}
+    <Link href={`/Products/${slug}`} className="absolute inset-0"></Link>
   </div>
 );
 
 export default function OurProduct() {
+  const [products, setProducts] = useState<ProductData[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getData();
+      setProducts(data);
+    }
+    fetchData();
+  }, []);
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex min-h-screen flex-col items-center p-24">
+        <h1>No Products Available</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-screen-2xl px-4 lg:px-0 mb-[136px] mt-[120px] lg:w-[80%]">
       <h1 className="font-semibold text-[28px] md:text-[34px] text-grayscalesblack text-center pb-[30px]">
@@ -135,8 +126,16 @@ export default function OurProduct() {
       </h1>
       {/* Grid Container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[16px] md:gap-[16px] mt-[20px]">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+        {products.map((product, index) => (
+          <ProductCard
+            key={index}
+            img={product.imageURL}
+            label={product.badge}
+            price={product.price}
+            name={product.title}
+            labelColor="#00fffd" // Customize this as needed
+            slug={product.currentSlug} // Pass the slug to the ProductCard
+          />
         ))}
       </div>
     </div>

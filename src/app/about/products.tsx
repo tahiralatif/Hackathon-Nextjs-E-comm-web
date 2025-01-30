@@ -19,17 +19,18 @@ type AboutProductData = {
 
 async function getGalleryProducts(): Promise<AboutProductData[]> {
   const fetchData = await client.fetch(
-    `*[_type == "product"]{
-      title,
-      "currentSlug": slug.current,
-      "imageURL": image.asset->url,
-      description,
-      price,
-      badge,
-      category,
-      tags,
-      inventory
-    }`
+   `*[_type == "product"]{
+  title,
+  "currentSlug": slug.current,
+  "imageURL": image.asset->url,
+  description,
+  price,
+  badge,
+  category,
+  tags,
+  inventory
+}
+`
   );
   return fetchData;
 }

@@ -33,18 +33,18 @@ const Product: React.FC = () => {
 
   const getData = async (): Promise<ProductData[]> => {
     return await client.fetch(
-      `*[_type == "products"][0..11]{
-        title,
-        "slug": slug.current,
-        price,
-        priceWithoutDiscount,
-        badge,
-        "imageURL": image.asset->url,
-        category,
-        description,
-        inventory,
-        tags
-      }`
+      `*[_type == "products"] | order(_createdAt desc)[0..11]{
+  title,
+  "slug": slug.current,
+  price,
+  priceWithoutDiscount,
+  badge,
+  "imageURL": image.asset->url,
+  category,
+  description,
+  inventory,
+  tags
+}`
     );
   };
 

@@ -27,18 +27,19 @@ type Product = {
 // Fetch data from Sanity
 async function getData(): Promise<Product[]> {
   const fetchData = await client.fetch(
-    `*[_type == "products"][0..3]{
-      title,
-      "currentSlug": slug.current, 
-      price,
-      priceWithoutDiscount,
-      badge,
-      "imageURL": image.asset->url,
-      category,
-      description,
-      inventory,
-      tags
-    }`
+    `*[_type == "products"][0...3]{
+  title,
+  "currentSlug": slug.current, 
+  price,
+  priceWithoutDiscount,
+  badge,
+  "imageURL": image.asset->url,
+  category,
+  description,
+  inventory,
+  tags
+}
+`
   );
   return fetchData;
 }

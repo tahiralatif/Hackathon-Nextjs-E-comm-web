@@ -19,17 +19,18 @@ interface InstaProductData {
 async function getGalleryProducts(): Promise<InstaProductData[]> {
   const fetchData = await client.fetch(
     `*[_type == "products" && "instagram" in tags][2..7]{
-      title,
-      "slug": slug.current,
-      price,
-      priceWithoutDiscount,
-      badge,
-      "imageURL": image.asset->url,
-      category,
-      description,
-      inventory,
-      tags
-    }`
+  title,
+  "slug": slug.current,
+  price,
+  priceWithoutDiscount,
+  badge,
+  "imageURL": image.asset->url,
+  category,
+  description,
+  inventory,
+  tags
+}
+`
   );
   return fetchData;
 }

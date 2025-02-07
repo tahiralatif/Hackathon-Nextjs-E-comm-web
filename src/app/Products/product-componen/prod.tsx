@@ -6,45 +6,41 @@ import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
 
-// Define your product data type
+// Define Product Data Type
 interface ProductData {
   id: number;
-  slug: string;
+  slug: string; // ✅ Ensure slug is always a string
   title: string;
   price: number;
   priceWithoutDiscount: number;
-  badge: string;
+  badge?: string;
   imageURL: string;
   category: string;
   description: string;
   inventory: number;
   tags: string[];
-  isFavorite: boolean;
-  quantity: number;
-  name: string;
-  size: string;
-  imagePath: string;
 }
 
 const Product: React.FC = () => {
   const [data, setData] = useState<ProductData[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState<ProductData[]>([]); // Local cart state
+  const [cart, setCart] = useState<ProductData[]>([]);
 
+  // ✅ Fetch products with correct slug extraction
   const getData = async (): Promise<ProductData[]> => {
     return await client.fetch(
       `*[_type == "products"] | order(_createdAt desc)[0..11]{
-  title,
-  "slug": slug.current,
-  price,
-  priceWithoutDiscount,
-  badge,
-  "imageURL": image.asset->url,
-  category,
-  description,
-  inventory,
-  tags
-}`
+        title,
+        "slug": slug.current || "", // ✅ Ensure slug is always a string
+        price,
+        priceWithoutDiscount,
+        badge,
+        "imageURL": image.asset->url,
+        category,
+        description,
+        inventory,
+        tags
+      }`
     );
   };
 
@@ -63,7 +59,6 @@ const Product: React.FC = () => {
 
     fetchProducts();
 
-    // Retrieve cart items from localStorage on component mount (if any)
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
       setCart(JSON.parse(storedCart));
@@ -71,7 +66,6 @@ const Product: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Save cart data to localStorage whenever it changes
     if (cart.length > 0) {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
@@ -80,11 +74,9 @@ const Product: React.FC = () => {
   const handleAddToCart = (e: React.MouseEvent, product: ProductData) => {
     e.preventDefault();
 
-    // Add the product to the cart state
     const updatedCart = [...cart, product];
     setCart(updatedCart);
 
-    // Show success message
     Swal.fire({
       position: "top-right",
       icon: "success",
@@ -117,8 +109,8 @@ const Product: React.FC = () => {
         All Products
       </h1>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.map((val: ProductData, i: number) => (
-          <Link href={`/Products/${val.slug}`} key={i}>
+        {data.map((val: ProductData) => (
+          <Link href={`/Products/${val.slug}`} key={val.slug}>
             <div className="w-full sm:w-[280px] h-auto mx-auto relative bg-white shadow-md rounded-md p-3 cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-lg">
               <Image
                 src={val.imageURL}

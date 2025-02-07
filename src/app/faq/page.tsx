@@ -1,131 +1,121 @@
-import { client } from "@/sanity/lib/client";
-import Image from "next/image";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-interface ProductDetails {
-  title: string;
-  price: number;
-  priceWithoutDiscount: number;
-  badge: string;
-  imageURL: string;
-  category: string;
-  description: string;
-  inventory: number;
-  tags: string[];
-}
-
-interface Params {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function ProductDetailsPage({ params }: Params) {
-  const { slug } = params;
-
-  // Fetch product details
-  const product: ProductDetails | null = await client.fetch(
-    `*[_type == "products" && slug.current == $slug][0]{
-      title,
-      price,
-      priceWithoutDiscount,
-      badge,
-      "imageURL": image.asset->url,
-      category,
-      description,
-      inventory,
-      tags
-    }`,
-    { slug }
-  );
-
-  if (!product) {
-    return <div>Product not found</div>;
-  }
-
+const FAQ = () => {
   return (
-    <div className="w-full h-full max-w-screen-xl mx-auto mt-[76px] mb-[300px]">
-      <div className="w-[1609px] h-[632.89px] mt-[151px] mx-[30px] md:mx-[80px]">
-        <div className="my-[20px] w-[1100px] h-[547px] lg:flex md:flex">
-          <div className="w-[733.33px] h-[547.89px] mb-[22px] mt-[22px]">
-            <h2 className="text-[#111111] font-medium text-[20px] md:pl-[6px]">
-              {product.title}
-            </h2>
+    <div className="mx-auto max-w-screen-xl mt-[100px] ">
+      <div className="lg:mx-20 sm:mx-10 lg:mb-20 mb-8 lg:mt-10 mx-3 mt-[150px]">
+        <div className="title mx-auto ">
+          <h2 className="lg:text-[36px] text-3xl text-black text-center font-semibold">
+            Frequently Asked Questions
+          </h2>
+        </div>
+        <div>
+          <div className="flex md:flex-row flex-col lg:gap-5 gap-3 lg:mt-20 mt-10">
+            {/* Left */}
+            <div className="md:w-1/2 lg:space-y-5 space-y-3 lg:px-5">
+              {/* 1 */}
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-1"
+                  className="border-none bg-[#F7F7F7] lg:px-6 px-3 py-2 lg:py-4"
+                >
+                  <AccordionTrigger className="lg:font-bold font-semibold lg:text-[18px] text-[#333333]">
+                    What types of chairs do you offer?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4F4F4F] text-xs lg:text-[16px]">
+                    We offer a variety of ergonomic, office, gaming, and lounge chairs.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
-            <div className="flex items-center mt-[24px] pb-[16px]">
-              <Image
-                src={product.imageURL}
-                alt={product.title}
-                width={500}
-                height={500}
-                className="w-[150px] h-[150px] mr-[30px] mt-[24px]"
-              />
-              <div className="w-full">
-                <div className="flex justify-between">
-                  <p className="font-normal text-[16px] text-grayscalesblack pb-4">
-                    {product.title}
-                  </p>
-                  <p className="font-normal text-[16px] text-grayscalesblack pb-4">
-                    MRP: ${product.price}
-                  </p>
-                </div>
-                <p className="text-[15px] text-[#757575] font-normal pb-4">
-                  {product.category}
-                </p>
-                <div className="flex gap-x-[50px] mb-[20px]">
-                  <p className="text-[#757575] text-[15px] font-normal">
-                    Size L
-                  </p>
-                  <p className="text-[#757575] text-[15px] font-normal">
-                    Inventory: {product.inventory}
-                  </p>
-                </div>
-                <div className="flex">
-                  <button className="px-6 py-3 bg-blue-500 text-white rounded-lg mr-4">
-                    Add to Cart
-                  </button>
-                  <button className="px-6 py-3 bg-gray-300 text-black rounded-lg">
-                    Add to Wishlist
-                  </button>
-                </div>
-              </div>
+              {/* 2 */}
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-2"
+                  className="border-none bg-[#F7F7F7] lg:px-6 px-3 py-2 lg:py-4"
+                >
+                  <AccordionTrigger className="lg:font-bold font-semibold lg:text-[18px] text-[#333333]">
+                    Do your chairs come with a warranty?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4F4F4F] text-xs lg:text-[16px]">
+                    Yes, all our chairs come with a 1-year warranty covering manufacturing defects.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              {/* 3 */}
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-3"
+                  className="border-none bg-[#F7F7F7] lg:px-6 px-3 py-2 lg:py-4"
+                >
+                  <AccordionTrigger className="lg:font-bold font-semibold lg:text-[18px] text-[#333333]">
+                    Can I try a chair before purchasing?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4F4F4F] text-xs lg:text-[16px]">
+                    Yes, you can visit our showroom to test different models before making a purchase.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
 
-            <div className="flex items-center mt-[24px] border-t-2 pt-[16px]">
-              <p className="text-[15px] text-[#757575] font-normal pb-4">
-                {product.description}
-              </p>
-            </div>
-          </div>
+            {/* Right */}
+            <div className="md:w-1/2 space-y-3 lg:space-y-5">
+              {/* 1 */}
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-4"
+                  className="border-none bg-[#F7F7F7] lg:px-6 px-3 py-2 lg:py-4"
+                >
+                  <AccordionTrigger className="lg:font-bold font-semibold lg:text-[18px] text-[#333333]">
+                    How can we get in touch with you?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4F4F4F] text-xs lg:text-[16px]">
+                    You can contact us via email at support@comfortychairs.com or call us at (123) 456-7890.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
-          <div className="w-[390px] h-[295px] mt-[28px] md:mr-[158px] md:pl-[75px]">
-            <h2 className="font-medium text-[21px] px-[8px] py-[-1px]">
-              Price Summary
-            </h2>
+              {/* 2 */}
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-5"
+                  className="border-none bg-[#F7F7F7] lg:px-6 px-3 py-2 lg:py-4"
+                >
+                  <AccordionTrigger className="lg:font-bold font-semibold lg:text-[18px] text-[#333333]">
+                    What will be delivered? And When?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4F4F4F] text-xs lg:text-[16px]">
+                    Orders are shipped within 3-5 business days. You will receive an assembled or easy-to-assemble chair with instructions.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
-            <div className="flex justify-between items-center px-[4px] pt-[37px]">
-              <p className="text-[15px] font-normal">Price</p>
-              <p className="text-[14px] font-medium text-grayscalesblack">
-                ${product.price}
-              </p>
+              {/* 3 */}
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-6"
+                  className="border-none bg-[#F7F7F7] px-6 py-4"
+                >
+                  <AccordionTrigger className="lg:font-bold font-semibold lg:text-[18px] text-[#333333]">
+                    How do I clean and maintain my Comforty chair?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4F4F4F] text-xs lg:text-[16px]">
+                    Use a soft, damp cloth for cleaning. Avoid harsh chemicals. For leather chairs, use leather cleaner for maintenance.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
-
-            <div className="flex justify-between items-center px-[4px] pt-[37px]">
-              <p className="text-[15px] font-normal">Discount</p>
-              <p className="text-[14px] font-medium text-grayscalesblack">
-                ${product.priceWithoutDiscount - product.price}
-              </p>
-            </div>
-
-            <div className="w-[340.38px] pb-[19px] pt-[19px] flex justify-between border-t-2 border-b-2 mt-[20px]">
-              <p>Total</p>
-              <p>${product.price}</p>
-            </div>
-            <button className="w-[334.67px] h-[60px] bg-[#029FAE] hover:bg-[#57bbc4] mt-[32px] px-[101px] mb-[400px] py-[18px] text-[#FAFAFA] rounded-full">
-              Member Checkout
-            </button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default FAQ;

@@ -29,7 +29,7 @@ interface ProductCardProps {
 
 async function getData(): Promise<ProductData[]> {
   const fetchData = await client.fetch(
-    `*[_type == "products"][0...7]{
+    `*[_type == "products"][0..7]{
   title,
   "currentSlug": slug.current, 
   price,

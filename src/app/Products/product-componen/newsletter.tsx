@@ -3,8 +3,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
+import Img from "../../../../public/Instagram 1.svg"
+import Link from "next/link";
+
 
 interface InstaProductData {
+  slug: string;
   title: string;
   price: number;
   priceWithoutDiscount: number;
@@ -76,14 +80,17 @@ export default function Newsletter() {
             {products.length > 0 ? (
               products.map((product, index) => (
                 <div key={index} className="w-full h-[186px]">
+                  <Link href={`/Products/${product.slug}`}>
                   <Image
-                    src={product.imageURL || "/default-product-image.png"} // Fallback if no imageURL
+                    src={product.imageURL || Img} // Fallback if no imageURL
                     alt={product.title}
                     className="w-full h-full object-cover rounded-md"
                     width={300}
                     height={300}
                   />
+                  </Link>
                 </div>
+              
               ))
             ) : (
               <p>No Instagram products found</p>

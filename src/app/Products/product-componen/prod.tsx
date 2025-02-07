@@ -97,6 +97,7 @@ const Product: React.FC = () => {
   if (loading) {
     return (
       <div className="flex min-h-screen flex-col items-center p-24">
+        <div className="loader"></div>
         <h1>Loading Products...</h1>
       </div>
     );
@@ -118,18 +119,17 @@ const Product: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.map((val: ProductData, i: number) => (
           <Link href={`/Products/${val.slug}`} key={i}>
-            <div className="w-full sm:w-[280px] h-auto mx-auto relative bg-white shadow-md rounded-md p-3 cursor-pointer">
+            <div className="w-full sm:w-[280px] h-auto mx-auto relative bg-white shadow-md rounded-md p-3 cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-lg">
               <Image
                 src={val.imageURL}
                 alt={val.title}
                 width={280}
                 height={280}
-                className="rounded-md"
+                className="rounded-md transition-opacity duration-500 ease-in-out hover:opacity-90"
               />
               {val.badge && (
                 <button
-                  className="absolute top-[20px] left-[20px] text-white text-xs px-[8px] py-[4px] rounded-lg"
-                  style={{ backgroundColor: "#377c4e" }}
+                  className="absolute top-[20px] left-[20px] text-white text-xs px-[8px] py-[4px] rounded-lg bg-gradient-to-r from-green-500 to-green-700"
                 >
                   {val.badge}
                 </button>
@@ -140,21 +140,18 @@ const Product: React.FC = () => {
                     {val.title}
                   </span>
                   <p className="text-gray-800 font-bold mt-[4px]">
-                    {val.price}{" "}
-                    <span className="text-sm text-gray-500 line-through ml-2">
+                    {val.price} 
+                    <span className="text-sm text-gray-500 line-through ml-2 italic opacity-75">
                       {val.priceWithoutDiscount}
                     </span>
                   </p>
                 </div>
-                <div className="h-[36px] w-[36px] flex justify-center items-center rounded-sm bg-gray-200 shadow-lg hover:scale-110 transition-transform hover:bg-teal-600 hover:text-white  duration-300 ease-in-out cursor-pointer">
-                  <Image
-                    onClick={(e) => handleAddToCart(e, val)}
-                    src="/Buy 2.svg"
-                    alt="Add to Cart"
-                    width={20}
-                    height={20}
-                  />
-                </div>
+                <button
+                  onClick={(e) => handleAddToCart(e, val)}
+                  className="px-3 py-1 bg-[#007580] text-white rounded-md hover:bg-[#005f60] transform transition duration-200 hover:scale-105"
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           </Link>

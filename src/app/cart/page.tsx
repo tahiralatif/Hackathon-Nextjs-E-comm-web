@@ -11,6 +11,7 @@ import {
 import Heart from "../../../public/heart.svg";
 import Delete from "../../../public/delete.svg";
 import { useRouter } from "next/navigation";
+import AuthGuard from "@/components/AuthGuard";
 
 interface ProductData {
   color: string;
@@ -128,6 +129,7 @@ export default function CartPage() {
   };
 
   return (
+    <AuthGuard>
     <div className="w-full max-w-screen-xl mx-auto mt-[76px] mb-[300px] px-4">
       <div className="w-full h-full flex flex-col lg:flex-row gap-8">
         {/* Cart Items Section */}
@@ -219,8 +221,10 @@ export default function CartPage() {
           <h2 className="font-semibold text-[28px] mb-8">Order Summary</h2>
           <div className="space-y-4 bg-white p-6 rounded-lg shadow-lg">
             <div className="flex justify-between">
-              <p className="text-[15px] font-medium text-gray-600">Subtotal</p>
-              <p className="text-[16px] font-semibold text-gray-900">${total.toFixed(2)}</p>
+              <p className="text-[15px] font-medium text-gray-600">Subtotal ({cartItems.length} items)</p>
+              <p className="text-[16px] font-semibold text-gray-900">
+                ${cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+              </p>
             </div>
             <div className="flex justify-between">
               <p className="text-[15px] font-medium text-gray-600">Delivery & Handling</p>
@@ -242,5 +246,6 @@ export default function CartPage() {
         </div>
       </div>
     </div>
+    </AuthGuard>
   );
 }

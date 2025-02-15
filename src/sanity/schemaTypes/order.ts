@@ -60,10 +60,11 @@ const orderSchema = {
       of: [
         {
           type: "reference",
-          to: { type: "product" },
+          to: { type: "product" }, // "title" ke bajaye kisi existing document ka type likho
         },
       ],
     },
+    
     {
       name: "total",
       type: "number",
